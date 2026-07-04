@@ -1,0 +1,134 @@
+const mongoose = require('mongoose');
+
+const productSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:true,
+        trim:true,
+        maxLength:60
+    },
+    description:{
+        type:String,
+        required:true,
+        trim:true,
+        maxLength:300
+    },
+    brand:{
+        type:String,
+        required:true,
+        trim:true,
+        lowercase:true,
+    },
+    createdBy:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+    },
+    updatedBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        default:null,
+    },
+    slug:{
+        type:String,
+        required:true,
+        unique:true,
+        trim:true,
+        lowercase:true,
+    },
+    priceHistory:[{
+        price:{
+            type:Number,
+            required:true,
+        },
+        changedBy:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User",
+            required:true,
+        },
+        reason:{
+            type:String,
+            required:true,
+            trim:true,
+        },
+        changedAt:{
+            type:Date,
+            default:Date.now,
+        }
+    }],
+
+    currentPrice:{
+        type:Number,
+        required:true,
+        min:0,
+        index:true,
+    },
+    category:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Category',
+        required:true,
+        index:true,
+    },
+    sku:{
+        type:String,
+        required:true,
+        unique:true,
+        trim:true,
+    },
+    images:[
+        {
+            url:{
+                type:String,
+                required:true,
+                
+            },
+            publicId:{
+                type:String,
+                required:true,
+            },
+            isPrimary:{
+                type:Boolean,
+                default:false,
+            }
+        }
+    ],
+    stock:{
+        type:Number,
+        required:true,
+        default:0,
+        min:0
+    },
+    averageRating:{
+        type:Number,
+        default:0,
+        min:0,
+        max:5,
+    },
+    reviewCount:{
+        type:Number,
+        default:0,
+        min:0,
+    },
+    isActive:{
+        type:Boolean,
+        default:true,
+    },
+    tags:[
+        {
+            type:String,
+            trim:true,
+            lowercase:true,
+        }
+    ],
+    salesCount:{
+        type:Number,
+        default:0,
+        min:0,
+    }
+},{
+    timestamps:true,
+})
+
+const Product = mongoose.model('Product',productSchema)
+
+module.exports = Product
