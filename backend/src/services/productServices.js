@@ -6,6 +6,9 @@ const { generateSlug, generateSKU, createInitialPriceHistory } = require("../uti
 const findProductById = async (productId)=>{
     try {
         const product = await Product.findById(productId)
+        if (!product) {
+            throw new ApiError(404,"Product Not Found")
+        }
         return product
     } catch (error) {
         throw error
@@ -27,6 +30,11 @@ const findCategoryById =async (categoryId)=>{
         throw new ApiError(404,"Category Not Found")
     }
     return existingCategory
+}
+
+const fetchAllProducts = async ()=>{
+    const products = await Product.find()
+    return products
 }
 
 const createProduct = async ({name,description,brand,currentPrice,category,stock,images,tags},adminId)=>{
@@ -63,4 +71,5 @@ module.exports = {
     findCategoryById,
     findProductById,
     findProductBySlug,
+    fetchAllProducts,
 }
