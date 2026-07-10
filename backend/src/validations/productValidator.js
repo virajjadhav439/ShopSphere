@@ -9,6 +9,12 @@ body("category").notEmpty().withMessage("Category is Required"),
 body("stock").optional().isInt({min:0}).withMessage("Stock Cannot be negative"),
 ]
 
+const priceValidator = [
+body("currentPrice").isFloat({ min: 0 }).withMessage("Price must be greater than or equal to 0"),
+body("reason").trim().notEmpty().withMessage("Reason is required")
+];
+
 module.exports = {
-    productValidator
+    productValidator,
+    priceValidator,
 }

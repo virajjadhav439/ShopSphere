@@ -19,19 +19,16 @@ const generateSKU = () => {
     return `SKU-${timestamp}-${random}`;
 };
 
-const createInitialPriceHistory = (price,adminId,reason)=>{
-    const priceHistory = [
-    {
+const createPriceHistoryEntry = (price,adminId,reason)=>{
+return{
         price,
         changedBy: adminId,
         reason,
     }
-];
-return priceHistory;
 }
 
 module.exports ={
     generateSlug,
     generateSKU,
-    createInitialPriceHistory,
+    createPriceHistoryEntry,
 }

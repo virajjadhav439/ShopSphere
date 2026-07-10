@@ -1,7 +1,7 @@
 const Category = require("../models/Category")
 const Product = require("../models/Product")
 const ApiError = require("../utils/ApiError")
-const { generateSlug, generateSKU, createInitialPriceHistory } = require("../utils/productHelpers")
+const { generateSlug, generateSKU,createPriceHistoryEntry } = require("../utils/productHelpers")
 
 const findProductById = async (productId)=>{
     try {
@@ -33,7 +33,7 @@ const findCategoryById =async (categoryId)=>{
 }
 
 const fetchAllProducts = async ()=>{
-    const products = await Product.find()
+    const products = await Product.find({isActive:true})
     return products
 }
 
@@ -52,7 +52,13 @@ const createProduct = async ({name,description,brand,currentPrice,category,stock
     const sku = generateSKU()
 
     // Create First Price History Entry
-    const priceHistory = createInitialPriceHistory(currentPrice,adminId,"Initial Product Creation")
+    const priceHistory = [
+    createPriceHistoryEntry(
+        currentPrice,
+        adminId,
+        "Initial Product Creation"
+    )
+];
 
     // Create Product 
     const product  = await Product.create({
@@ -66,10 +72,41 @@ const createProduct = async ({name,description,brand,currentPrice,category,stock
     return product
 }
 
+const updatePrice = async (productId, updatedPrice, adminId, reason) => {
+
+    // Find Product
+    const product = await findProductById(productId);
+
+    // Nothing changed
+    if (product.currentPrice === updatedPrice) {
+        throw new ApiError(400,"Product already has this price")
+    }
+
+    // Create History Entry
+    const historyEntry = createPriceHistoryEntry(
+        updatedPrice,
+        adminId,
+        reason
+    );
+
+    // Update Product
+    product.currentPrice = updatedPrice;
+    product.priceHistory.push(historyEntry);
+    product.updatedBy = adminId;
+
+    // Save
+    await product.save();
+
+    return product;
+}
+
+
+
 module.exports = {
     createProduct,
     findCategoryById,
     findProductById,
     findProductBySlug,
     fetchAllProducts,
+    updatePrice,
 }

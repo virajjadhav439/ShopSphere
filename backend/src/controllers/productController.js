@@ -1,7 +1,7 @@
-const { createProduct, findProductById, fetchAllProducts } = require("../services/productServices")
+const { createProduct, findProductById, fetchAllProducts, updatePrice } = require("../services/productServices")
 const asyncHandler = require("../utils/asyncHandler")
 
-const create = asyncHandler(async (req,res) =>{
+const createProductController = asyncHandler(async (req,res) =>{
     const product = await createProduct(req.body,req.user.userId)
 
     return res.status(201).json({
@@ -24,8 +24,23 @@ const getAllProducts = asyncHandler(async (req,res)=>{
     })
 })
 
+const updatePriceController = asyncHandler(async(req,res) =>{
+    const { currentPrice, reason } = req.body;
+    const updatedProduct = await updatePrice(
+        req.params.id,
+        currentPrice,
+        req.user.userId,
+        reason
+    );
+    return res.status(200).json({
+        success: true,
+        updatedProduct
+    })
+})
+
 module.exports = {
-    create,
+    createProductController,
     findProduct,
     getAllProducts,
+    updatePriceController,
 }
