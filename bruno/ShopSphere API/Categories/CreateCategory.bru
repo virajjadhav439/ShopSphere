@@ -1,0 +1,29 @@
+meta {
+  name: CreateCategory
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/categories
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+    "name": "Laptops",
+    "description": "All laptop products",
+    "image": "https://dummyimage.com/laptops.png",
+    "parentCategory": null
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

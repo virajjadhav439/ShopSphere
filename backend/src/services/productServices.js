@@ -2,6 +2,7 @@ const Category = require("../models/Category")
 const Product = require("../models/Product")
 const ApiError = require("../utils/ApiError")
 const { generateSlug, generateSKU,createPriceHistoryEntry } = require("../utils/productHelpers")
+const { findCategoryById } = require("./categoryServices")
 
 const findProductById = async (productId)=>{
     try {
@@ -24,13 +25,16 @@ const findProductBySlug = async (productSlug)=>{
     }
 }
 
-const findCategoryById =async (categoryId)=>{
-    const existingCategory = await Category.findById(categoryId)
-    if (!existingCategory) {
-        throw new ApiError(404,"Category Not Found")
+const findProductByCategory = async (categoryId)=>{
+    try {
+        const product = await Product.findOne({category:categoryId})
+        return product
+    } catch (error) {
+        throw error
     }
-    return existingCategory
 }
+
+// Direct Services
 
 const fetchAllProducts = async ()=>{
     const products = await Product.find({isActive:true})
@@ -163,4 +167,5 @@ module.exports = {
     updateBasicInfo,
     updateStock,
     softDeleteProduct,
+    findProductByCategory,
 }

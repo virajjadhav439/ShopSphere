@@ -1,0 +1,29 @@
+meta {
+  name: UpdateCategory
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3000/api/categories/6a540b6921dc9c5c41d48609
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+    "name": "Gaming Laptops",
+    "description": "Gaming laptops collection",
+    "image": "https://dummyimage.com/gaming-laptops.png",
+    "parentCategory": null
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

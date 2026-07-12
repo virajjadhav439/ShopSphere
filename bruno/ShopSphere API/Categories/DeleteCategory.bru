@@ -1,0 +1,20 @@
+meta {
+  name: DeleteCategory
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:3000/api/categories/6a540b6921dc9c5c41d48609
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
