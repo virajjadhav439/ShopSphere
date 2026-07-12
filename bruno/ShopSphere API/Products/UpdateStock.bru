@@ -1,0 +1,19 @@
+meta {
+  name: UpdateStock
+  type: http
+  seq: 6
+}
+
+put {
+  url: http://localhost:3000/api/products/:id/stock
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+settings {
+  encodeUrl: true
+}

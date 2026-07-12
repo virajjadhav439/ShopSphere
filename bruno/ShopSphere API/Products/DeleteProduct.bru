@@ -1,0 +1,19 @@
+meta {
+  name: DeleteProduct
+  type: http
+  seq: 7
+}
+
+delete {
+  url: http://localhost:3000/api/products/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+settings {
+  encodeUrl: true
+}

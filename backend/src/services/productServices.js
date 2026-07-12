@@ -100,7 +100,58 @@ const updatePrice = async (productId, updatedPrice, adminId, reason) => {
     return product;
 }
 
+const updateBasicInfo = async (productId,newName,newDescription,newBrand,newTags,adminId)=>{
+    //Find Product
+    const product = await findProductById(productId)
+    //if name Changed ->GenerateSlug
+    const slug = generateSlug(newName);
 
+const existingProduct = await findProductBySlug(slug);
+
+if (
+    existingProduct && existingProduct._id.toString() !== product._id.toString()
+) {
+    throw new ApiError(
+        409,
+        "Product with this name already exists"
+    );
+}
+
+    product.name = newName
+    product.description = newDescription
+    product.slug = slug;
+    product.brand = newBrand
+    product.tags = newTags
+    product.updatedBy=adminId
+
+    // save
+    await product.save()
+    return product;
+}
+
+
+const updateStock = async (productId,newStock,adminId)=>{
+    //Find Product
+    const product = await findProductById(productId)
+    // Update stock
+    product.stock = newStock
+    product.updatedBy = adminId
+    // save
+    await product.save()
+    return product;
+}
+
+const softDeleteProduct = async (productId,adminId)=>{
+    // Find Product
+    const product = await findProductById(productId)
+    //update the isActive Status
+    product.isActive=false
+    // update updatedby
+    product.updatedBy=adminId
+    // save
+    await product.save()
+    return product;
+}
 
 module.exports = {
     createProduct,
@@ -109,4 +160,7 @@ module.exports = {
     findProductBySlug,
     fetchAllProducts,
     updatePrice,
+    updateBasicInfo,
+    updateStock,
+    softDeleteProduct,
 }

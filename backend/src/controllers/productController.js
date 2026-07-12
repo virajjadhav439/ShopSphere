@@ -1,4 +1,5 @@
-const { createProduct, findProductById, fetchAllProducts, updatePrice } = require("../services/productServices")
+const { createProduct, findProductById, fetchAllProducts, 
+    updatePrice, updateBasicInfo, updateStock, softDeleteProduct } = require("../services/productServices")
 const asyncHandler = require("../utils/asyncHandler")
 
 const createProductController = asyncHandler(async (req,res) =>{
@@ -9,7 +10,7 @@ const createProductController = asyncHandler(async (req,res) =>{
     })
 })
 
-const findProduct = asyncHandler(async(req,res)=>{
+const findProductController = asyncHandler(async(req,res)=>{
     const product = await findProductById(req.params.id)
 
     return res.status(200).json({
@@ -17,7 +18,7 @@ const findProduct = asyncHandler(async(req,res)=>{
     })
 })
 
-const getAllProducts = asyncHandler(async (req,res)=>{
+const getAllProductsController = asyncHandler(async (req,res)=>{
     const products = await fetchAllProducts()
     return res.status(200).json({
         products
@@ -38,9 +39,42 @@ const updatePriceController = asyncHandler(async(req,res) =>{
     })
 })
 
+const updateBasicInfoController = asyncHandler(async(req,res)=>{
+    const {name,description,brand,tags} = req.body;
+
+    const updatedProduct = await updateBasicInfo(req.params.id,name,description,brand,tags,req.user.userId)
+
+    return res.status(200).json({
+        success:true,
+        updatedProduct
+    })
+})
+
+const updateStockController = asyncHandler(async(req,res)=>{
+    const {stock} = req.body;
+
+    const updatedProduct = await updateStock(req.params.id,stock,req.user.userId)
+
+    return res.status(200).json({
+        success:true,
+        updatedProduct
+    })
+})
+
+const softDeleteProductController = asyncHandler(async(req,res)=>{
+    const updatedProduct = await softDeleteProduct(req.params.id,req.user.userId)
+    return res.status(200).json({
+        success:true,
+        updatedProduct
+    })
+})
+
 module.exports = {
     createProductController,
-    findProduct,
-    getAllProducts,
+    findProductController,
+    getAllProductsController,
     updatePriceController,
+    updateBasicInfoController,
+    updateStockController,
+    softDeleteProductController,
 }

@@ -14,7 +14,20 @@ body("currentPrice").isFloat({ min: 0 }).withMessage("Price must be greater than
 body("reason").trim().notEmpty().withMessage("Reason is required")
 ];
 
+const stockValidator = [
+body("stock").isInt({min:0}).withMessage("Stock must be greater then or equal to 0"),
+]
+
+const basicInfoValidator = [
+body("name").trim().notEmpty().withMessage("Product Name is Required"),
+body("description").trim().notEmpty().withMessage("Description is Required"),
+body("brand").trim().notEmpty().withMessage("Brand is Required"),
+body("tags").optional().isArray().withMessage("Tags must be an array"),
+];
+
 module.exports = {
     productValidator,
     priceValidator,
-}
+    stockValidator,
+    basicInfoValidator,
+};
