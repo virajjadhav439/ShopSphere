@@ -13,14 +13,15 @@ const {
     updateCategoryController,
     deleteCategoryController,
 } = require("../controllers/categoryController");
+const authorize = require("../middlewares/authorize");
 
 router.get("/", getAllCategoriesController);
 router.get("/:id", findCategoryController);
 
-router.post("/",protect,categoryValidator,validate,createCategoryController);
+router.post("/",protect,authorize('admin'),categoryValidator,validate,createCategoryController);
 
-router.put("/:id",protect,categoryValidator,validate,updateCategoryController);
+router.put("/:id",protect,authorize('admin'),categoryValidator,validate,updateCategoryController);
 
-router.delete("/:id",protect,deleteCategoryController);
+router.delete("/:id",protect,authorize('admin'),deleteCategoryController);
 
 module.exports = router;
