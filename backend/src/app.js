@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const wishlistRoutes = require('./routes/wishlistRoutes');
 const globalErrorHandler = require('./middlewares/errorMiddleware');
 app.use(cors())
 app.use(express.json())
@@ -13,6 +14,8 @@ app.use('/api/auth',authRoutes)
 app.use('/api/products',productRoutes)
 
 app.use('/api/categories',categoryRoutes)
+
+app.use('/api/wishlist',wishlistRoutes)
 
 app.use(globalErrorHandler)
 

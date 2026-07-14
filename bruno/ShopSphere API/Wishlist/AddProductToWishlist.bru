@@ -1,0 +1,20 @@
+meta {
+  name: AddProductToWishlist
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/api/wishlist/6a4fc3e194cd0f715939b6d2
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

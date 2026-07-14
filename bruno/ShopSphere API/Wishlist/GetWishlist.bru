@@ -1,0 +1,20 @@
+meta {
+  name: GetWishlist
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/api/wishlist
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
