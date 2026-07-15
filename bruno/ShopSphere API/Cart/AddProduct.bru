@@ -1,11 +1,11 @@
 meta {
-  name: RemoveProductFromWishlist
+  name: AddProduct
   type: http
-  seq: 3
+  seq: 1
 }
 
-delete {
-  url: {{BASE_URL}}/api/wishlist/6a5523e55ecb248e877b500f
+post {
+  url: {{BASE_URL}}/api/cart/6a5523e55ecb248e877b500
   body: none
   auth: bearer
 }

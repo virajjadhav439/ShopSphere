@@ -26,9 +26,16 @@ return{
         reason,
     }
 }
+const createCartItem = (productId)=>{
+    return {
+        product:productId,
+        quantity:1,
+    }
+}
 
 module.exports ={
     generateSlug,
     generateSKU,
     createPriceHistoryEntry,
+    createCartItem,
 }

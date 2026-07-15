@@ -1,13 +1,17 @@
 meta {
-  name: RemoveProductFromWishlist
+  name: RemoveProduct
   type: http
-  seq: 3
+  seq: 4
 }
 
 delete {
-  url: {{BASE_URL}}/api/wishlist/6a5523e55ecb248e877b500f
+  url: {{BASE_URL}}/api/cart/:productId
   body: none
   auth: bearer
+}
+
+params:path {
+  productId: 6a4fc3e194cd0f715939b6d2
 }
 
 auth:bearer {

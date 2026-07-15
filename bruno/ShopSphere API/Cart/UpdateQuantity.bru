@@ -1,0 +1,30 @@
+meta {
+  name: UpdateQuantity
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{BASE_URL}}/api/cart/:productId
+  body: json
+  auth: bearer
+}
+
+params:path {
+  productId: 6a4fc3e194cd0f715939b6d2
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+      "quantity":5
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
