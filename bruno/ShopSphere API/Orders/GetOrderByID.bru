@@ -1,0 +1,20 @@
+meta {
+  name: GetOrderByID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/api/order/:orderId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  orderId: 6a5cfac96a64c58ae4332c3e
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

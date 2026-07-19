@@ -1,0 +1,36 @@
+meta {
+  name: CreateOrder
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/api/order
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+    "shippingAddress": {
+      "fullName": "Viraj Jadhav",
+      "phone": "9876543210",
+      "addressLine1": "123 MG Road",
+      "addressLine2": "Near City Mall",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pincode": "411001",
+      "country": "India"
+    },
+    "paymentMethod": "COD"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

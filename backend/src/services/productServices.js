@@ -4,17 +4,15 @@ const ApiError = require("../utils/ApiError")
 const { generateSlug, generateSKU,createPriceHistoryEntry } = require("../utils/productHelpers")
 const { findCategoryById } = require("./categoryServices")
 
-const findProductById = async (productId)=>{
-    try {
-        const product = await Product.findById(productId)
-        if (!product) {
-            throw new ApiError(404,"Product Not Found")
-        }
-        return product
-    } catch (error) {
-        throw error
+const findProductById = async (productId, session = null) => {
+    const query = Product.findById(productId);
+
+    if (session) {
+        query.session(session);
     }
-}
+
+    return await query;
+};
 
 const findProductBySlug = async (productSlug)=>{
     try {

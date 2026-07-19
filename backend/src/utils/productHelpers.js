@@ -1,3 +1,5 @@
+const Cart = require("../models/Cart");
+
 const generateSlug = (name) => {
     return name
         .trim()
@@ -32,10 +34,33 @@ const createCartItem = (productId)=>{
         quantity:1,
     }
 }
+const createOrderItem = (product, quantity) => {
+    return {
+        product: product._id,
+        productName: product.name,
+        productImage: product.images[0].url,
+        priceAtPurchase: product.currentPrice,
+        quantity,
+        subtotal: product.currentPrice * quantity,
+    };
+};
+
+const calculateOrderTotals = (orderItems) => {
+    let totalItems=0,totalPrice=0,tax=0,finalAmount=0
+    for(const item of orderItems){
+        totalItems+=item.quantity
+        totalPrice += item.subtotal;
+    }
+    tax = totalPrice * 0.03;
+    finalAmount = totalPrice + tax
+    return {totalItems,totalPrice,tax,finalAmount}
+}
 
 module.exports ={
     generateSlug,
     generateSKU,
     createPriceHistoryEntry,
     createCartItem,
+    createOrderItem,
+    calculateOrderTotals,
 }

@@ -5,9 +5,21 @@ const ApiError = require("../utils/ApiError")
 const {createCartItem } = require("../utils/productHelpers")
 const { findProductById } = require("./productServices")
 
-const findCartByUserId = async (userId)=>{
-    return await Cart.findOne({user:userId})
-}
+const findCartByUserId = async (userId, session = null) => {
+    const query = Cart.findOne({ user: userId });
+
+    if (session) {
+        query.session(session);
+    }
+
+    const cart = await query;
+
+    if (!cart) {
+        throw new ApiError(404, "Cart not found");
+    }
+
+    return cart;
+};
 
 const findCartById = async (cartId)=>{
     return await Cart.findById(cartId)
@@ -164,30 +176,31 @@ const removeProductFromCart = async (userId, productId) => {
     );
 };
 
-const clearCart = async (userId) => {
-// find cart
-    const cart = await findCartByUserId(userId);
+const clearCart = async (userId, session = null) => {
+    // Find cart
+    const cart = await findCartByUserId(userId, session);
 
     if (!cart) {
         throw new ApiError(404, "Cart not found");
     }
-// Clear the items
+
+    // Clear items
     cart.items = [];
 
     await calculateCartTotals(cart);
-// save
-    await cart.save();
 
-    return await cart.populate(
-        "items.product",
-        "name slug currentPrice images brand stock"
-    );
+    // Save with transaction session
+    await cart.save({ session });
+
+    return cart
 };
 
 module.exports = {
+    findCartByUserId,
     addProductToCart,
     getCart,
     updateQuantity,
     removeProductFromCart,
     clearCart,
+    findCartById,
 }
