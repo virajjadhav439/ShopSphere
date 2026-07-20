@@ -1,17 +1,17 @@
 meta {
-  name: GetOrderByID
+  name: UpdateOrder
   type: http
-  seq: 3
+  seq: 1
 }
 
-get {
-  url: {{BASE_URL}}/api/order/:orderId
+patch {
+  url: {{BASE_URL}}/api/admin/orders/:orderId/status
   body: none
   auth: bearer
 }
 
 params:path {
-  orderId: 6a5cfac96a64c58ae4332c3e
+  orderId: 6a5e13aa47347ebc609139db
 }
 
 auth:bearer {

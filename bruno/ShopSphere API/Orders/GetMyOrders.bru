@@ -7,9 +7,14 @@ meta {
 get {
   url: {{BASE_URL}}/api/order
   body: none
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

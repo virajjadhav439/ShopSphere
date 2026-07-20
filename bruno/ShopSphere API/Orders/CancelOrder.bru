@@ -7,11 +7,15 @@ meta {
 patch {
   url: {{BASE_URL}}/api/order/:orderId/cancel
   body: none
-  auth: inherit
+  auth: bearer
 }
 
 params:path {
   orderId: 6a5cfac96a64c58ae4332c3e
+}
+
+auth:bearer {
+  token: {{JWT}}
 }
 
 settings {

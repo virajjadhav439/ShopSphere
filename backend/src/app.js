@@ -7,6 +7,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const adminOrderRoutes = require('./routes/adminOrderRoutes');
 const globalErrorHandler = require('./middlewares/errorMiddleware');
 app.use(cors())
 app.use(express.json())
@@ -22,6 +23,8 @@ app.use('/api/wishlist',wishlistRoutes)
 app.use('/api/cart',cartRoutes)
 
 app.use('/api/order',orderRoutes)
+
+app.use('/api/admin/orders',adminOrderRoutes)
 
 app.use(globalErrorHandler)
 
