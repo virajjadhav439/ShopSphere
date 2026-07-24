@@ -79,6 +79,10 @@ paymentMethod: {
     enum: ["COD", "Razorpay", "Stripe"],
     required: true,
 },
+gatewayOrderId: {
+    type: String,
+    default: null
+},
 paymentStatus: {
     type: String,
     enum: ["Pending","Paid","Failed","Refunded"],

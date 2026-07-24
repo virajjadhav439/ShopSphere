@@ -7,11 +7,15 @@ meta {
 get {
   url: {{BASE_URL}}/api/admin/orders/:orderId
   body: none
-  auth: inherit
+  auth: bearer
 }
 
 params:path {
   orderId: 6a5e13aa47347ebc609139db
+}
+
+auth:bearer {
+  token: {{JWT}}
 }
 
 settings {

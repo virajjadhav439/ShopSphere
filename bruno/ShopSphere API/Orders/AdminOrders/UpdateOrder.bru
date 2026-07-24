@@ -6,7 +6,7 @@ meta {
 
 patch {
   url: {{BASE_URL}}/api/admin/orders/:orderId/status
-  body: none
+  body: json
   auth: bearer
 }
 
@@ -16,6 +16,12 @@ params:path {
 
 auth:bearer {
   token: {{JWT}}
+}
+
+body:json {
+  {
+    "orderStatus": "Pending"
+  }
 }
 
 settings {
