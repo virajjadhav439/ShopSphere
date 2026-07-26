@@ -1,5 +1,4 @@
 const asyncHandler = require("../utils/asyncHandler");
-const ApiResponse = require("../utils/ApiResponse");
 
 const {
     createCoupon,
@@ -8,33 +7,39 @@ const {
     updateCoupon,
     deleteCoupon,
     applyCoupon
-} = require("../services/couponService");
+} = require("../services/couponServices");
 
 const createCouponController = asyncHandler(async (req, res) => {
 
     const coupon = await createCoupon(req.body, req.user.id);
 
-    return res.status(201).json(
-        new ApiResponse(201, coupon, "Coupon Created Successfully")
-    );
+    return res.status(201).json({
+        success: true,
+        message: "Coupon Created Successfully",
+        data: coupon
+    });
 });
 
 const getAllCouponsController = asyncHandler(async (req, res) => {
 
     const coupons = await getAllCoupons();
 
-    return res.status(200).json(
-        new ApiResponse(200, coupons, "Coupons Fetched Successfully")
-    );
+    return res.status(200).json({
+        success: true,
+        message: "Coupons Fetched Successfully",
+        data: coupons
+    });
 });
 
 const getCouponByIdController = asyncHandler(async (req, res) => {
 
     const coupon = await getCouponById(req.params.couponId);
 
-    return res.status(200).json(
-        new ApiResponse(200, coupon, "Coupon Fetched Successfully")
-    );
+    return res.status(200).json({
+        success: true,
+        message: "Coupon Fetched Successfully",
+        data: coupon
+    });
 });
 
 const updateCouponController = asyncHandler(async (req, res) => {
@@ -44,18 +49,22 @@ const updateCouponController = asyncHandler(async (req, res) => {
         req.body
     );
 
-    return res.status(200).json(
-        new ApiResponse(200, coupon, "Coupon Updated Successfully")
-    );
+    return res.status(200).json({
+        success: true,
+        message: "Coupon Updated Successfully",
+        data: coupon
+    });
 });
 
 const deleteCouponController = asyncHandler(async (req, res) => {
 
     const coupon = await deleteCoupon(req.params.couponId);
 
-    return res.status(200).json(
-        new ApiResponse(200, coupon, "Coupon Deleted Successfully")
-    );
+    return res.status(200).json({
+        success: true,
+        message: "Coupon Deleted Successfully",
+        data: coupon
+    });
 });
 
 const applyCouponController = asyncHandler(async (req, res) => {
@@ -64,9 +73,11 @@ const applyCouponController = asyncHandler(async (req, res) => {
 
     const result = await applyCoupon(code, orderId);
 
-    return res.status(200).json(
-        new ApiResponse(200, result, "Coupon Applied Successfully")
-    );
+    return res.status(200).json({
+        success: true,
+        message: "Coupon Applied Successfully",
+        data: result
+    });
 });
 
 module.exports = {
