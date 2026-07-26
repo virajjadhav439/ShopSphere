@@ -1,4 +1,4 @@
-const {getAllOrders,getOrderById,updateOrderStatus,} = require("../services/adminOrderService");
+const {getAllOrders,getOrderById,updateOrderStatus,} = require("../services/adminOrderServices");
 
 const asyncHandler = require("../utils/asyncHandler");
 

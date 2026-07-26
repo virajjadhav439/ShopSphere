@@ -141,6 +141,15 @@ orderStatus: {
 deliveredAt: {
     type: Date,
 },
+coupon: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Coupon",
+    default: null
+},
+discount: {
+    type: Number,
+    default: 0
+},
 },{
     timestamps:true,
 })

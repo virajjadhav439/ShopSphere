@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{BASE_URL}}/api/payment/create-order
-  body: none
+  body: json
   auth: bearer
 }
 
@@ -14,7 +14,62 @@ auth:bearer {
   token: {{JWT}}
 }
 
+body:json {
+  {
+      "orderId": "6a5e13aa47347ebc609139db"
+  }
+}
+
 settings {
   encodeUrl: true
   timeout: 0
+}
+
+example {
+  name: Razor pay Create order example
+  
+  request: {
+    url: {{BASE_URL}}/api/payment/create-order
+    method: POST
+    mode: json
+    body:json: {
+      {
+          "orderId": "6a5e13aa47347ebc609139db"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      x-powered-by: Express
+      access-control-allow-origin: *
+      content-type: application/json; charset=utf-8
+      content-length: 186
+      etag: W/"ba-KTRgTivAUq8QoSML4mRavuL0TzA"
+      date: Sun, 26 Jul 2026 11:16:50 GMT
+      connection: keep-alive
+      keep-alive: timeout=5
+    }
+  
+    status: {
+      code: 201
+      text: Created
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "Razorpay order created successfully.",
+          "data": {
+            "gatewayOrderId": "order_TI6yiA0JIZ7RwC",
+            "amount": 11999900,
+            "currency": "INR",
+            "receipt": "6a5e13aa47347ebc609139db"
+          }
+        }
+      '''
+    }
+  }
 }
