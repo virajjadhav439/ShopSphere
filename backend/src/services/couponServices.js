@@ -1,6 +1,7 @@
 // Helper Functions 
 
 const Coupon = require("../models/Coupon")
+const Order = require("../models/Order")
 const ApiError = require("../utils/ApiError")
 
 const findCouponByCode = async (code) => {
@@ -165,9 +166,8 @@ const applyCoupon = async (code, orderId) => {
 
     // Find Order
     const order = await findOrderById(orderId);
-
     // Minimum Order Amount
-    if (order.totalAmount < coupon.minimumOrderAmount) {
+    if (order.totalPrice < coupon.minimumOrderAmount) {
         throw new ApiError(
             400,
             `Minimum order amount should be ₹${coupon.minimumOrderAmount}.`
@@ -180,7 +180,7 @@ const applyCoupon = async (code, orderId) => {
     if (coupon.discountType === "PERCENTAGE") {
 
         discount =
-            (order.totalAmount * coupon.discountValue) / 100;
+            (order.totalPrice * coupon.discountValue) / 100;
 
         if (discount > coupon.maximumDiscount) {
             discount = coupon.maximumDiscount;
@@ -193,9 +193,9 @@ const applyCoupon = async (code, orderId) => {
     }
 
     // Prevent Negative Total
-    discount = Math.min(discount, order.totalAmount);
+    discount = Math.min(discount, order.totalPrice);
 
-    const finalAmount = order.totalAmount - discount;
+    const finalAmount = order.totalPrice - discount;
     order.coupon = coupon._id;
     order.discount = discount;
     order.finalAmount = finalAmount;
@@ -203,7 +203,7 @@ const applyCoupon = async (code, orderId) => {
     await order.save();
     return {
         couponCode: coupon.code,
-        originalAmount: order.totalAmount,
+        originalAmount: order.totalPrice,
         discount,
         finalAmount
     };

@@ -1,0 +1,32 @@
+meta {
+  name: CreateCoupon
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/api/coupons
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+    "code": "FLAT200",
+    "discountType": "FIXED",
+    "discountValue": 200,
+    "minimumOrderAmount": 1000,
+    "expiryDate": "2026-12-31T23:59:59.000Z",
+    "usageLimit": 50,
+    "isActive": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

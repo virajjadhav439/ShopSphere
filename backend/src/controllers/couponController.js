@@ -11,7 +11,7 @@ const {
 
 const createCouponController = asyncHandler(async (req, res) => {
 
-    const coupon = await createCoupon(req.body, req.user.id);
+    const coupon = await createCoupon(req.body, req.user.userId);
 
     return res.status(201).json({
         success: true,

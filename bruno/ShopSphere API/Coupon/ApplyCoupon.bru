@@ -1,0 +1,27 @@
+meta {
+  name: ApplyCoupon
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{BASE_URL}}/api/coupons/apply
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+    "code": "FLAT200",
+    "orderId": "6a6736009e3b701715cc2706"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

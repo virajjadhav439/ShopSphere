@@ -1,0 +1,32 @@
+meta {
+  name: UpdateCoupon
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{BASE_URL}}/api/coupons/:couponId
+  body: json
+  auth: bearer
+}
+
+params:path {
+  couponId: 6a6731c49e3b701715cc26f4
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+    "discountValue": 25,
+    "maximumDiscount": 700,
+    "usageLimit": 150
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
