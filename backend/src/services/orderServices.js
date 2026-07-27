@@ -5,8 +5,8 @@ const { findCartByUserId, clearCart } = require("./cartServices")
 const { findProductById } = require("./productServices")
 const mongoose = require('mongoose');
 // helper Functions 
-const findOrderById = async (orderId)=>{
-    return await Order.findById(orderId)
+const findOrderById = async (orderId, session = null) => {
+    return await Order.findById(orderId).session(session);
 }
 
 const findOrdersByUserId = async (userId) => {
@@ -136,32 +136,66 @@ const getOrderById = async (orderId, userId) => {
 
 const cancelOrder = async (orderId, userId) => {
 
-    const order = await findOrderById(orderId);
+    const session = await mongoose.startSession();
 
-    if (!order) {
-        throw new ApiError(404, "Order not found");
+    try {
+
+        session.startTransaction();
+
+        const order = await Order.findById(orderId).session(session);
+
+        if (!order) {
+            throw new ApiError(404, "Order not found");
+        }
+
+        if (order.user.toString() !== userId.toString()) {
+            throw new ApiError(403, "You are not authorized to cancel this order.");
+        }
+
+        if (
+            order.orderStatus === "Delivered" ||
+            order.orderStatus === "Cancelled" ||
+            order.orderStatus === "Returned"
+        ) {
+            throw new ApiError(
+                400,
+                `Cannot cancel an order that is ${order.orderStatus}.`
+            );
+        }
+
+        // Restore stock
+        for (const item of order.items) {
+
+            const product = await findProductById(item.product, session);
+
+            if (!product) {
+                throw new ApiError(404, "Product not found.");
+            }
+
+            product.stock += item.quantity;
+
+            await product.save({ session });
+        }
+
+        order.orderStatus = "Cancelled";
+
+        await order.save({ session });
+
+        await session.commitTransaction();
+
+        return order;
+
+    } catch (error) {
+
+        await session.abortTransaction();
+
+        throw error;
+
+    } finally {
+
+        session.endSession();
+
     }
-
-    if (order.user.toString() !== userId.toString()) {
-        throw new ApiError(403, "You are not authorized to cancel this order.");
-    }
-
-    if (
-        order.orderStatus === "Delivered" ||
-        order.orderStatus === "Cancelled" ||
-        order.orderStatus === "Returned"
-    ) {
-        throw new ApiError(
-            400,
-            `Cannot cancel an order that is ${order.orderStatus}.`
-        );
-    }
-
-    order.orderStatus = "Cancelled";
-
-    await order.save();
-
-    return order;
 };
 
 module.exports = {
