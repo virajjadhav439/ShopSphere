@@ -1,0 +1,28 @@
+meta {
+  name: CreateReview
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/api/review
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+      "productId": "6a5523e55ecb248e877b500f",
+      "rating": 5,
+      "comment": "Excellent product! The build quality is amazing."
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,31 @@
+meta {
+  name: UpdateReview
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{BASE_URL}}/api/review/:reviewId
+  body: json
+  auth: bearer
+}
+
+params:path {
+  reviewId: 6a68a503932e142bc75f2187
+}
+
+auth:bearer {
+  token: {{JWT}}
+}
+
+body:json {
+  {
+      "rating": 4,
+      "comment": "After using it for a week, I still like it but found a few minor issues."
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
