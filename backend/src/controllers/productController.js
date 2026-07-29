@@ -23,7 +23,8 @@ const getAllProductsController = asyncHandler(async (req,res)=>{
 
     const products = await fetchAllProducts(queryParams)
     return res.status(200).json({
-        products
+        success: true,
+        ...products
     })
 })
 

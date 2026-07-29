@@ -39,6 +39,13 @@ const fetchAllProducts = async (queryParams)=>{
         isActive:true,
     }
     const sort = {};
+
+    // Default Values  as 1 and 10
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+
+    const skip = (page - 1) * limit;
+    
     if(queryParams.search){
         filter.name = {
             $regex: queryParams.search,
@@ -46,49 +53,56 @@ const fetchAllProducts = async (queryParams)=>{
         };
     }
     if(queryParams.category){
-    filter.category = queryParams.category;
-}
-
-if (queryParams.minPrice || queryParams.maxPrice) {
-    filter.currentPrice = {};
-
-    if (queryParams.minPrice) {
-        filter.currentPrice.$gte = Number(queryParams.minPrice);
+        filter.category = queryParams.category;
     }
-
-    if (queryParams.maxPrice) {
-        filter.currentPrice.$lte = Number(queryParams.maxPrice);
+    
+    if (queryParams.minPrice || queryParams.maxPrice) {
+        filter.currentPrice = {};
+        
+        if (queryParams.minPrice) {
+            filter.currentPrice.$gte = Number(queryParams.minPrice);
+        }
+        
+        if (queryParams.maxPrice) {
+            filter.currentPrice.$lte = Number(queryParams.maxPrice);
+        }
     }
-}
-if (queryParams.rating !== undefined) {
-    filter.averageRating = {
-        $gte: Number(queryParams.rating)
+    if (queryParams.rating !== undefined) {
+        filter.averageRating = {
+            $gte: Number(queryParams.rating)
+        };
+    }
+    if(queryParams.inStock === "true"){
+        filter.stock = {
+            $gt: 0
+        };
+    }
+    
+    if (queryParams.sort === "price_asc") {
+        sort.currentPrice = 1;
+    }
+    
+    if (queryParams.sort === "price_desc") {
+        sort.currentPrice = -1;
+    }
+    
+    if (queryParams.sort === "rating") {
+        sort.averageRating = -1;
+    }
+    
+    if (queryParams.sort === "newest") {
+        sort.createdAt = -1;
+    }
+    const totalProducts = await Product.countDocuments(filter);
+    const totalPages = Math.ceil(totalProducts / limit);
+    
+    const products = await Product.find(filter).sort(sort).skip(skip).limit(limit).populate("category","name")
+    return {
+        products,
+        totalProducts,
+        totalPages,
+        currentPage: page
     };
-}
-if(queryParams.inStock === "true"){
-    filter.stock = {
-        $gt: 0
-    };
-}
-
-if (queryParams.sort === "price_asc") {
-    sort.currentPrice = 1;
-}
-
-if (queryParams.sort === "price_desc") {
-    sort.currentPrice = -1;
-}
-
-if (queryParams.sort === "rating") {
-    sort.averageRating = -1;
-}
-
-if (queryParams.sort === "newest") {
-    sort.createdAt = -1;
-}
-
-    const products = await Product.find(filter).sort(sort)
-    return products
 }
 
 const createProduct = async ({name,description,brand,currentPrice,category,stock,images,tags},adminId)=>{

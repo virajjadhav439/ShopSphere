@@ -1,18 +1,13 @@
 meta {
-  name: GetAllProducts
+  name: GetAdminAnalytics
   type: http
-  seq: 2
+  seq: 1
 }
 
 get {
-  url: {{BASE_URL}}/api/products?page=1&limit=1
+  url: {{BASE_URL}}/api/admin/analytics
   body: none
   auth: bearer
-}
-
-params:query {
-  page: 1
-  limit: 1
 }
 
 auth:bearer {
