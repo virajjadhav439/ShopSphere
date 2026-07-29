@@ -19,7 +19,9 @@ const findProductController = asyncHandler(async(req,res)=>{
 })
 
 const getAllProductsController = asyncHandler(async (req,res)=>{
-    const products = await fetchAllProducts()
+    const queryParams = req.query;
+
+    const products = await fetchAllProducts(queryParams)
     return res.status(200).json({
         products
     })

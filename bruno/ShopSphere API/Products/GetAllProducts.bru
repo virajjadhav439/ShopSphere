@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{BASE_URL}}/api/products
+  url: {{BASE_URL}}/api/products?sort=newest
   body: none
   auth: bearer
+}
+
+params:query {
+  sort: newest
 }
 
 auth:bearer {

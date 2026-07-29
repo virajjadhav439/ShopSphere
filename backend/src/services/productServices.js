@@ -34,8 +34,60 @@ const findProductByCategory = async (categoryId)=>{
 
 // Direct Services
 
-const fetchAllProducts = async ()=>{
-    const products = await Product.find({isActive:true})
+const fetchAllProducts = async (queryParams)=>{
+    const filter = {
+        isActive:true,
+    }
+    const sort = {};
+    if(queryParams.search){
+        filter.name = {
+            $regex: queryParams.search,
+            $options: "i"
+        };
+    }
+    if(queryParams.category){
+    filter.category = queryParams.category;
+}
+
+if (queryParams.minPrice || queryParams.maxPrice) {
+    filter.currentPrice = {};
+
+    if (queryParams.minPrice) {
+        filter.currentPrice.$gte = Number(queryParams.minPrice);
+    }
+
+    if (queryParams.maxPrice) {
+        filter.currentPrice.$lte = Number(queryParams.maxPrice);
+    }
+}
+if (queryParams.rating !== undefined) {
+    filter.averageRating = {
+        $gte: Number(queryParams.rating)
+    };
+}
+if(queryParams.inStock === "true"){
+    filter.stock = {
+        $gt: 0
+    };
+}
+
+if (queryParams.sort === "price_asc") {
+    sort.currentPrice = 1;
+}
+
+if (queryParams.sort === "price_desc") {
+    sort.currentPrice = -1;
+}
+
+if (queryParams.sort === "rating") {
+    sort.averageRating = -1;
+}
+
+if (queryParams.sort === "newest") {
+    sort.createdAt = -1;
+}
+
+    const products = await Product.find(filter).sort(sort)
     return products
 }
 
