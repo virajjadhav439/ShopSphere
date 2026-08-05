@@ -9,7 +9,7 @@ const router = new express.Router()
 router.get('/me',protect,profile)
 
 
-router.post('/signup',signupValidator,validate,signup)
+router.post('/register',signupValidator,validate,signup)
 router.post('/login',loginValidator,validate,login)
 
 
