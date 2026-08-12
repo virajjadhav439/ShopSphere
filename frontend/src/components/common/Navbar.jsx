@@ -1,71 +1,196 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
+import {Sheet,SheetContent,SheetHeader,SheetTitle,SheetTrigger,SheetClose} from "@/components/ui/sheet";
+import {
+  Home,
+  Package,
+  Grid2X2,
+  Heart,
+  ShoppingCart,
+  User,
+  Menu,
+} from "lucide-react";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     // DeskTop Ribbon 
   <nav className="w-full px-6 py-4 bg-white border-b shadow-sm">
       {/* Desktop Navbar */}
-      <div className="hidden md:flex w-full justify-center py-1">
-        <div className='flex justify-between'>
-        <Link to="/" className="px-8 mr-10">
-  ShopSphere
-  </Link>
-        <div className="flex items-center gap-7.5 px-10">
-          <Link to="/">
-          <span>Home</span>
-          </Link>
-          <Link to="/products">
-          <span>Products</span>
-          </Link>
-          <Link to="/categories">
-          <span>Categories</span>
-          </Link>
-        </div>
-        <div className="flex items-center gap-5">
-          <Link to="/wishlist">
-          <span>Wishlist</span>
-          </Link>
-          <Link to="/cart">
-          <span>Cart</span>
-          </Link>
-          <Link to="/login">
-          <span>Login</span>
-          </Link>
-        </div>
-        </div>
-      </div>
+<div className="hidden md:flex w-full justify-center py-1">
+  <div className="flex items-center justify-between w-full max-w-6xl">
 
+    {/* Logo */}
+    <Link
+      to="/"
+      className="font-bold text-xl"
+    >
+      ShopSphere
+    </Link>
+
+    {/* Main Navigation */}
+    <div className="flex items-center gap-8">
+
+      <Link
+        to="/"
+        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+      >
+        <Home size={18} />
+        <span>Home</span>
+      </Link>
+
+      <Link
+        to="/products"
+        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+      >
+        <Package size={18} />
+        <span>Products</span>
+      </Link>
+
+      <Link
+        to="/categories"
+        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+      >
+        <Grid2X2 size={18} />
+        <span>Categories</span>
+      </Link>
+
+    </div>
+
+    {/* User Actions */}
+    <div className="flex items-center gap-5">
+
+      <Link
+        to="/wishlist"
+        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+      >
+        <Heart size={18} />
+        <span>Wishlist</span>
+      </Link>
+
+      <Link
+        to="/cart"
+        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+      >
+        <ShoppingCart size={18} />
+        <span>Cart</span>
+      </Link>
+
+      <Link
+        to="/login"
+        className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+      >
+        <User size={18} />
+        <span>Login</span>
+      </Link>
+
+    </div>
+
+  </div>
+</div>
     
       <div className="md:hidden">
 
   {/* Mobile Header */}
-  <div className="flex items-center justify-between px-1.5 py-2">
+  <div className="flex items-center justify-between px-1.5 py-2 font-medium text-xl">
     
-    <Link to="/">
-      ShopSphere
-    </Link>
+    <Link
+  to="/"
+  className="font-bold text-xl"
+>
+  ShopSphere
+</Link>
 
-    <button onClick={() => setIsOpen(!isOpen)}  className='font-bold'>
-      {isOpen ? "✕" : "☰"}
-    </button>
+    
 
-  </div>
 
   {/* Mobile Sidebar */}
-  {isOpen && (
-    <div className="flex flex-col gap-4 mt-4">
-      <Link to="/">Home</Link>
-      <Link to="/products">Products</Link>
-      <Link to="/categories">Categories</Link>
-      <Link to="/wishlist">Wishlist</Link>
-      <Link to="/cart">Cart</Link>
-      <Link to="/login">Login</Link>
-    </div>
-  )}
+    <Sheet>
 
+      <SheetTrigger asChild>
+        <button>
+          <Menu size={28} />
+        </button>
+      </SheetTrigger>
+
+      <SheetContent side="left">
+
+        <SheetHeader>
+          <SheetTitle>
+            ShopSphere
+          </SheetTitle>
+        </SheetHeader>
+
+        <div className="flex flex-col gap-5 mt-8 px-5 text-2xl">
+
+          <SheetClose asChild>
+            <Link
+              to="/"
+              className="flex items-center gap-4 hover:text-primary transition-colors"
+            >
+              <Home size={24} />
+              Home
+            </Link>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Link
+              to="/products"
+              className="flex items-center gap-4 hover:text-primary transition-colors"
+            >
+              <Package size={24} />
+              Products
+            </Link>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Link
+              to="/categories"
+              className="flex items-center gap-4 hover:text-primary transition-colors"
+            >
+              <Grid2X2 size={24} />
+              Categories
+            </Link>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Link
+              to="/wishlist"
+              className="flex items-center gap-4 hover:text-primary transition-colors"
+            >
+              <Heart size={24} />
+              Wishlist
+            </Link>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Link
+              to="/cart"
+              className="flex items-center gap-4 hover:text-primary transition-colors"
+            >
+              <ShoppingCart size={24} />
+              Cart
+            </Link>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Link
+              to="/login"
+              className="flex items-center gap-4 hover:text-primary transition-colors"
+            >
+              <User size={24} />
+              Login
+            </Link>
+          </SheetClose>
+
+        </div>
+
+      </SheetContent>
+
+    </Sheet>
+
+
+  </div>
 </div>
     </nav>
     
