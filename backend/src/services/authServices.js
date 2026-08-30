@@ -60,7 +60,7 @@ const loginUser = async ({email,password})=>{
         const result = await bcrypt.compare(password,existingUser.password)
         //Show Result
         if (!result) {
-            throw new ApiError(401, "Wrong Password");
+            throw new ApiError(401,"Wrong Password");
         }
 
     //Create JWT token if the login is successful 
