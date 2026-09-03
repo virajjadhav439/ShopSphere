@@ -1,57 +1,78 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { getProducts } from "@/services/productService";
 
 const ProductsGrid = () => {
-  const dummyProducts = [
-  {
-    id: '6a4fc3e194cd0f715939b6d2',
-    name: "Samsung Galaxy S25 Ultra 512GB",
-    price: 119999,
-    image: "https://placehold.co/600x600",
-    rating: 4.5,
-    reviews: 128,
-  },
-  {
-    id: 2,
-    name: "Mechanical Keyboard",
-    price: 5499,
-    image: "https://placehold.co/600x600",
-    rating: 4.7,
-    reviews: 94,
-  },
-  {
-    id: 3,
-    name: "Gaming Mouse",
-    price: 1999,
-    image: "https://placehold.co/600x600",
-    rating: 4.3,
-    reviews: 76,
-  },
-  {
-    id: 4,
-    name: "Smart Watch",
-    price: 7999,
-    image: "https://placehold.co/600x600",
-    rating: 4.6,
-    reviews: 215,
-  },
-  {
-    id: 5,
-    name: "USB-C Hub",
-    price: 1499,
-    image: "https://placehold.co/600x600",
-    rating: 4.2,
-    reviews: 51,
-  },
-  {
-    id: 6,
-    name: "Laptop Stand",
-    price: 2499,
-    image: "https://placehold.co/600x600",
-    rating: 4.4,
-    reviews: 63,
-  },
-];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [search, setSearch] = useState("");
+const [debouncedSearch, setDebouncedSearch] = useState("");
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(search);
+    setCurrentPage(1);
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [search]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await getProducts({
+  page: currentPage,
+  limit: 6,
+  ...(debouncedSearch && {
+    search: debouncedSearch,
+  }),
+});
+
+        const data = response.data;
+
+        const formattedProducts = data.products.map((product) => ({
+          ...product,
+
+          // Convert backend fields to ProductCard fields
+          id: product._id,
+
+          image:
+            product.images?.find((image) => image.isPrimary)?.url ||
+            product.images?.[0]?.url,
+
+          rating: product.averageRating,
+
+          reviews: product.reviewCount,
+
+          price: product.currentPrice,
+        }));
+
+        setProducts(formattedProducts);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error(error);
+
+        setError(
+          error.response?.data?.message || "Failed to load products"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [currentPage, debouncedSearch]);
+
+  
+  
   return (
     <>
       {/* Products Page */}
@@ -68,6 +89,8 @@ const ProductsGrid = () => {
           <input
             type="text"
             placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
@@ -95,37 +118,77 @@ const ProductsGrid = () => {
           {/* Stock */}
           <div>
             <label>Availability</label>
-            {/* In-stock filter */}
+            {/* In-stock filter will come here */}
           </div>
 
           {/* Sort */}
           <div>
             <label>Sort</label>
-            {/* Sort select */}
+            {/* Sort select will come here */}
           </div>
 
         </div>
 
         {/* Product Grid */}
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {dummyProducts.map((product) => (
-    <ProductCard
-      key={product.id}
-      product={product}
-    />
-  ))}
-</div>
+
+          {/* Loading State */}
+          {loading && (
+            <p>Loading products...</p>
+          )}
+
+          {/* Error State */}
+          {!loading && error && (
+            <p>{error}</p>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && products.length === 0 && (
+            <p>No products found.</p>
+          )}
+
+          {/* Products */}
+          {!loading && !error && products.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                />
+              ))}
+            </div>
+          )}
+
         </div>
 
         {/* Pagination */}
-        <div>
-          {/* Pagination controls */}
-        </div>
+        {!loading && !error && totalPages > 1 && (
+          <div className="flex items-center justify-center gap-4 mt-8">
+
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((page) => page - 1)}
+            >
+              Previous
+            </button>
+
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((page) => page + 1)}
+            >
+              Next
+            </button>
+
+          </div>
+        )}
 
       </div>
     </>
   );
 };
 
-export default ProductsGrid;    
+export default ProductsGrid;
