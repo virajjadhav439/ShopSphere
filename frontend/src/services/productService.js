@@ -5,3 +5,7 @@ export const getProducts = (params = {}) => {
     params,
   });
 };
+
+export const getProductById = (id) => {
+  return api.get(`/products/${id}`);
+};

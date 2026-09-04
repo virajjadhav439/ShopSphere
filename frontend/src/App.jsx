@@ -13,6 +13,7 @@ import Categories from "./pages/admin/Categories";
 import AdminOrders from "./pages/admin/AdminOrders";
 import Analytics from "./pages/admin/Analytics";
 import { Toaster } from 'react-hot-toast';
+import ProductDetails from "./pages/customer/ProductDetails";
 
 const App = () => {
   return (<>
@@ -23,6 +24,7 @@ const App = () => {
         <Route element={<CustomerLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/:id" element={<ProductDetails/>} />
         </Route>
         {/* Authentication Routes */}
         <Route element={<AuthLayout />}>
