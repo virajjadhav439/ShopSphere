@@ -107,11 +107,13 @@ const Navbar = () => {
   {/* Mobile Sidebar */}
     <Sheet>
 
-      <SheetTrigger asChild>
-        <button>
-          <Menu size={28} />
-        </button>
-      </SheetTrigger>
+      <SheetTrigger
+  render={
+    <button type="button">
+      <Menu size={28} />
+    </button>
+  }
+/>
 
       <SheetContent side="left">
 
@@ -123,65 +125,77 @@ const Navbar = () => {
 
         <div className="flex flex-col gap-5 mt-8 px-5 text-2xl">
 
-          <SheetClose asChild>
-            <Link
-              to="/"
-              className="flex items-center gap-4 hover:text-primary transition-colors"
-            >
-              <Home size={24} />
-              Home
-            </Link>
-          </SheetClose>
+          <SheetClose
+  render={
+    <Link
+      to="/"
+      className="flex items-center gap-4 hover:text-primary transition-colors"
+    />
+  }
+>
+  <Home size={24} />
+  Home
+</SheetClose>
 
-          <SheetClose asChild>
-            <Link
-              to="/products"
-              className="flex items-center gap-4 hover:text-primary transition-colors"
-            >
-              <Package size={24} />
-              Products
-            </Link>
-          </SheetClose>
+          <SheetClose
+  render={
+    <Link
+      to="/products"
+      className="flex items-center gap-4 hover:text-primary transition-colors"
+    />
+  }
+>
+  <Package size={24} />
+  Products
+</SheetClose>
 
-          <SheetClose asChild>
-            <Link
-              to="/categories"
-              className="flex items-center gap-4 hover:text-primary transition-colors"
-            >
-              <Grid2X2 size={24} />
-              Categories
-            </Link>
-          </SheetClose>
+          <SheetClose
+  render={
+    <Link
+      to="/categories"
+      className="flex items-center gap-4 hover:text-primary transition-colors"
+    />
+  }
+>
+  <Grid2X2 size={24} />
+  Categories
+</SheetClose>
 
-          <SheetClose asChild>
-            <Link
-              to="/wishlist"
-              className="flex items-center gap-4 hover:text-primary transition-colors"
-            >
-              <Heart size={24} />
-              Wishlist
-            </Link>
-          </SheetClose>
+          <SheetClose
+  render={
+    <Link
+      to="/wishlist"
+      className="flex items-center gap-4 hover:text-primary transition-colors"
+    />
+  }
+>
+  <Heart size={24} />
+  Wishlist
+</SheetClose>
 
-          <SheetClose asChild>
-            <Link
-              to="/cart"
-              className="flex items-center gap-4 hover:text-primary transition-colors"
-            >
-              <ShoppingCart size={24} />
-              Cart
-            </Link>
-          </SheetClose>
+          <SheetClose
+  render={
+    <Link
+      to="/cart"
+      className="flex items-center gap-4 hover:text-primary transition-colors"
+    />
+  }
+>
+  <ShoppingCart size={24} />
+  Cart
+</SheetClose>
 
-          <SheetClose asChild>
-            <Link
-              to="/login"
-              className="flex items-center gap-4 hover:text-primary transition-colors"
-            >
-              <User size={24} />
-              Login
-            </Link>
-          </SheetClose>
+          <SheetClose
+  render={
+    <Link
+      to="/login"
+      className="flex items-center gap-4 hover:text-primary transition-colors"
+    />
+  }
+>
+  <User size={24} />
+  Login
+</SheetClose>
 
         </div>
 
