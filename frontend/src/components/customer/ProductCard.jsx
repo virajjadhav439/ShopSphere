@@ -9,10 +9,13 @@ import { Heart, Star, ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { addToCart } from "@/services/cartService";
-import { addToWishlist } from "@/services/wishlistService";
 import toast from "react-hot-toast";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({
+  product,
+  isWishlisted,
+  onWishlistChange,
+}) => {
   const handleAddToCart = async () => {
   try {
     const response = await addToCart(product.id);
@@ -21,18 +24,6 @@ const ProductCard = ({ product }) => {
   } catch (error) {
     toast.error(
       error.response?.data?.message || "Failed to add to cart"
-    );
-  }
-};
-
-const handleAddToWishlist = async () => {
-  try {
-    const response = await addToWishlist(product.id);
-
-    toast.success(response.data.message || "Added to wishlist");
-  } catch (error) {
-    toast.error(
-      error.response?.data?.message || "Failed to add to wishlist"
     );
   }
 };
@@ -52,10 +43,29 @@ const handleAddToWishlist = async () => {
 {/* Wishlist */}
   <button
   type="button"
-  onClick={handleAddToWishlist}
+  onClick={() => onWishlistChange(product.id)}
   className="absolute top-3 right-3 rounded-full bg-white p-2 shadow-sm transition hover:scale-105 hover:bg-gray-100"
 >
-  <Heart size={18} />
+  <div className="relative h-4.5 w-4.5">
+    <Heart
+      size={18}
+      className="absolute inset-0 text-black"
+    />
+
+    <div
+      className={`absolute inset-0 overflow-hidden transition-all duration-500 ${
+        isWishlisted
+          ? "[clip-path:inset(0_0_0_0)]"
+          : "[clip-path:inset(0_0_100%_0)]"
+      }`}
+    >
+      <Heart
+        size={18}
+        className="text-red-500"
+        fill="currentColor"
+      />
+    </div>
+  </div>
 </button>
 </div>
 

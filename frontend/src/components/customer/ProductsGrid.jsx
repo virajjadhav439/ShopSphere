@@ -5,6 +5,11 @@ import ProductCardSkeleton from "./ProductCardSkeleton";
 import { getCategories } from "@/services/categoryService";
 import toast from "react-hot-toast";
 import { Button } from "../ui/button";
+import {
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
+} from "@/services/wishlistService";
 
 const ProductsGrid = () => {
   const [products, setProducts] = useState([]);
@@ -32,6 +37,45 @@ const [inStockOnly, setInStockOnly] = useState(false);
 
 const [sort, setSort] = useState("");
 
+const [wishlistIds, setWishlistIds] = useState(new Set());
+
+const handleWishlistChange = async (productId) => {
+  try {
+    if (wishlistIds.has(productId)) {
+      await removeFromWishlist(productId);
+
+      setWishlistIds((currentIds) => {
+        const newIds = new Set(currentIds);
+
+        newIds.delete(productId);
+
+        return newIds;
+      });
+
+      toast.success("Removed from wishlist");
+    } else {
+      await addToWishlist(productId);
+
+      setWishlistIds((currentIds) => {
+        const newIds = new Set(currentIds);
+
+        newIds.add(productId);
+
+        return newIds;
+      });
+
+      toast.success("Added to wishlist");
+    }
+  } catch (error) {
+    console.error(error);
+
+    toast.error(
+      error.response?.data?.message ||
+        "Failed to update wishlist"
+    );
+  }
+};
+
 const handleApplyPrice = () => {
   if (
     minPrice &&
@@ -46,6 +90,26 @@ const handleApplyPrice = () => {
   setAppliedMaxPrice(maxPrice);
   setCurrentPage(1);
 };
+
+useEffect(() => {
+  const fetchWishlist = async () => {
+    try {
+      const response = await getWishlist();
+
+      const wishlistProducts = response.data.wishlist.products;
+
+      const ids = new Set(
+        wishlistProducts.map((product) => product._id)
+      );
+
+      setWishlistIds(ids);
+    } catch (error) {
+      console.error("Failed to load wishlist", error);
+    }
+  };
+
+  fetchWishlist();
+}, []);
 
 useEffect(() => {
   const fetchCategories = async () => {
@@ -308,9 +372,11 @@ useEffect(() => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
                 <ProductCard
-                  key={product.id}
-                  product={product}
-                />
+  key={product.id}
+  product={product}
+  isWishlisted={wishlistIds.has(product.id)}
+  onWishlistChange={handleWishlistChange}
+/>
               ))}
             </div>
           )}
