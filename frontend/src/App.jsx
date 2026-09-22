@@ -10,6 +10,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminProducts from "./pages/admin/AdminProducts";
 import Dashboard from "./pages/admin/Dashboard";
 import Categories from "./pages/admin/Categories";
+
 import AdminOrders from "./pages/admin/AdminOrders";
 import Analytics from "./pages/admin/Analytics";
 import { Toaster } from "react-hot-toast";
@@ -18,6 +19,7 @@ import Cart from "./pages/customer/Cart";
 import Checkout from "./pages/customer/Checkout";
 import Orders from "./pages/customer/Orders";
 import Wishlist from "./pages/customer/Wishlist";
+import CustomerCategories from "./pages/customer/CustomerCategories";
 
 const App = () => {
   return (
@@ -35,7 +37,7 @@ const App = () => {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/categories" element={<Categories />} />
+            <Route path="/categories" element={<CustomerCategories />} />
           </Route>
           {/* Authentication Routes */}
           <Route element={<AuthLayout />}>
