@@ -35,6 +35,7 @@ const App = () => {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/categories" element={<Categories />} />
           </Route>
           {/* Authentication Routes */}
           <Route element={<AuthLayout />}>
